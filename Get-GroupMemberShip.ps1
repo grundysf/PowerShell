@@ -300,7 +300,7 @@ function GenFileName {
         $HierarchyName += $AccountName
         $script:ItemCount += 1
         $Script:TotalAllUsers += $iTotal
-        $cleanName = (Get-ADUser $sSam -Properties EmployeeID | Select EmployeeID)
+        $cleanName = try { (Get-ADUser $sSam -Properties EmployeeID | Select EmployeeID) } catch {$_.Exception}
         $cleaner = $cleanName.EmployeeID
         if ($cleaner) {
         $Full = (Get-ADUser -Filter 'EmployeeID -eq $cleaner' | where {$_.DistinguishedName -notlike "*OU=Admin*" -and $_.DistinguishedName -notlike "*OU=Test*"}).Name
